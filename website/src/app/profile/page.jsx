@@ -261,11 +261,7 @@ export default function ProfilePage() {
         return "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400";
     }
   };
-  const [bageImages, setBageImages] = useState([
-    "https://gateway.pinata.cloud/ipfs/QmEcoHeroBadgeCID", // Eco Hero
-    "https://gateway.pinata.cloud/ipfs/QmTopListerBadgeCID", // Top Lister
-    "https://gateway.pinata.cloud/ipfs/QmGoldenReputationBadgeCID", // Golden Reputation
-  ]);
+  const [bageImages, setBageImages] = useState([]);
 
   const [badgesLoading, setBadgesLoading] = useState(false);
 
@@ -277,13 +273,16 @@ export default function ProfilePage() {
   async function fetchUserBadges() {
     try {
       const response = await fetch("/api/badge/currentUser");
-
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || "Something went wrong");
       }
       console.log("Badges:", data.badges);
+      const mapped = data.badges.map((badge) => ({
+        ...badge,
+        imageUrl: badgeImageMap[badge.name] || "",
+      }));
+      setBageImages(mapped);
       return data.badges;
     } catch (error) {
       console.error("Failed to fetch badges:", error.message);
