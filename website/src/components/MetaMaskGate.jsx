@@ -14,6 +14,7 @@ export default function MetaMaskGate({ onClose }) {
     connectWallet,
     error,
   } = useMetaMask();
+  
   const [hasUploaded, setHasUploaded] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [uploadError, setUploadError] = useState(null);

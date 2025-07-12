@@ -1,6 +1,5 @@
-import { dbConnect } from "@/lib/dbConnect";
+import dbConnect from "@/lib/dbConnect";
 import User from "@/model/user";
-import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/jwt";
 import { cookies } from "next/headers";
@@ -34,7 +33,7 @@ export async function GET(req) {
     if (!user) {
       return Response.json({ error: "User not found" }, { status: 404 });
     }
-    return NextResponse.json({ metamaskAddress: user.metamaskAddress });
+    return NextResponse.json({ MetaMaskAddress: user.MetaMaskAddress });
   } catch (error) {
     console.error("Failed to fetch metamaskAddress:", error);
     return NextResponse.json(
@@ -79,9 +78,9 @@ export async function POST(req) {
 
     const user = await User.findById(decoded.id).select("-password");
 
-    user.metamaskAddress = metamaskAddress;
+    user.MetaMaskAddress = metamaskAddress;
     await user.save();
-    console.log("Address saved!!" + user.metamaskAddress);
+    console.log("Address saved!!" + user.MetaMaskAddress);
     return NextResponse.json({
       success: true,
       message: "MetaMask address saved successfully",

@@ -1,35 +1,48 @@
-import { connectToDB } from "@/lib/mongodb";
-import User from "@/models/User";
+import User from "@/model/user";
 import { getAllBadgesForUser } from "../badgeservice";
-import { getUser } from "@/lib/getUser"
 import axios from "axios";
+import dbConnect from "@/lib/dbConnect";
+import { verifyToken } from "@/lib/jwt";
+import { cookies } from "next/headers";
 
 export async function GET(request) {
   try {
-    await connectToDB();
+    await dbConnect();
 
-    let user = await getUser(request);
-    console.log("User from getUser:", user);
-    
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
+
+    if (!token) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Not authenticated" }),
+        { status: 401 }
+      );
+    }
+
+    const decoded = verifyToken(token.value);
+
+    // If the token is invalid or expired, decoded will be null
+    if (!decoded) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid token" }),
+        { status: 401 }
+      );
+    }
+
+    const user = await User.findById(decoded.id).select("-password");
+
     if (!user) {
       return Response.json({ error: "User not found" }, { status: 404 });
     }
-
-    let userId = user._id;
-
-    if (userId) {
-      user = await User.findById(userId)
-        .select("firstName lastName email metamaskAddress")
-        .lean();
-    }
-    console.log("matamask User ID:", userId);
-
-
-    if (!user.metamaskAddress) {
-      return Response.json({ error: "metamaskAddress not found" }, { status: 404 });
+    console.log(user)
+    if (!user.MetaMaskAddress) {
+      return Response.json(
+        { error: "MetaMaskAddress not found" },
+        { status: 404 }
+      );
     }
     const badges = await getAllBadgesForUser(user.metamaskAddress);
-    console.log(badges)
+    console.log(badges);
 
     return Response.json({ success: true, user, badges });
   } catch (error) {

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export default function Navbar() {
+  console.log("NAVBVAR")
   const { theme, toggleTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user, isLoading, isAuthenticated, logout } = useUser()

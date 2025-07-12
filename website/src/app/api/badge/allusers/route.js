@@ -1,22 +1,22 @@
-import { connectToDB } from "@/lib/mongodb";
+import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
 import { getAllBadgesForUser } from "../badgeservice";
 import axios from "axios";
 
 export async function GET(request) {
   try {
-    await connectToDB();
+    await dbConnect();
 
-    const users = await User.find({}).select("firstName lastName email metamaskAddress").lean();
+    const users = await User.find({}).select("username email metamaskAddress").lean();
     
     // Process users sequentially to ensure proper async handling
     const userwithbadges = [];
     
     for (const user of users) {
-      if (!user.metamaskAddress) continue;
+      if (!user.MetaMaskAddress) continue;
       
       try {
-        const badges = await getAllBadgesForUser(user.metamaskAddress);
+        const badges = await getAllBadgesForUser(user.MetaMaskAddress);
         const fetchedImages = [];
         
         // Process badges sequentially to ensure all images are fetched
@@ -38,7 +38,7 @@ export async function GET(request) {
           id: user._id.toString(),
           name: `${user.firstName} ${user.lastName || ''}`.trim(),
           email: user.email,
-          metamaskAddress: user.metamaskAddress,
+          metamaskAddress: user.MetaMaskAddress,
           badges: fetchedImages,
           badgeCount: fetchedImages.length
         });
