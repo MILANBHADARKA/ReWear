@@ -6,6 +6,7 @@ import json
 from models.retriever import search_items
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+from models.sentiments import analyze_sentiment
 
 app = FastAPI()
 
@@ -112,3 +113,31 @@ def search(query: str):
 #         "type": type_result,
 #         "condition": condition_result
 #     }
+
+
+@app.post("/add-feedback/")
+async def add_feedback(item_id: int, feedback: str):
+    # Load DB
+    if DB_FILE.exists() and DB_FILE.stat().st_size != 0:
+        with open(DB_FILE, "r") as f:
+            clothes = json.load(f)
+    else:
+        return JSONResponse(status_code=404, content={"error": "DB not found"})
+
+    # Find item
+    for item in clothes:
+        if item["id"] == item_id:
+            sentiment = analyze_sentiment(feedback)
+            # Add feedbacks list if doesn't exist
+            if "feedbacks" not in item:
+                item["feedbacks"] = []
+            item["feedbacks"].append({"text": feedback, "sentiment": sentiment})
+            break
+    else:
+        return JSONResponse(status_code=404, content={"error": "Item not found"})
+
+    # Save back
+    with open(DB_FILE, "w") as f:
+        json.dump(clothes, f, indent=2)
+
+    return {"message": "Feedback added", "sentiment": sentiment}
