@@ -48,7 +48,7 @@ export default function ProfilePage() {
     }
     setLikedItems(newLikedItems);
   };
- const [badges, setBadges] = useState([]);
+  const [badges, setBadges] = useState([]);
 
   useEffect(() => {
     async function getBadges() {
@@ -56,10 +56,10 @@ export default function ProfilePage() {
       setBadges(fetchedBadges);
     }
 
-    getBadges(); 
+    getBadges();
   }, []);
 
-    async function fetchUserBadges() {
+  async function fetchUserBadges() {
     try {
       const response = await fetch("/api/badge/currentUser");
 
@@ -265,10 +265,6 @@ export default function ProfilePage() {
 
   const [badgesLoading, setBadgesLoading] = useState(false);
 
- 
-
- 
-
   // Updated to match your posts API pattern
   async function fetchUserBadges() {
     try {
@@ -277,6 +273,14 @@ export default function ProfilePage() {
       if (!response.ok) {
         throw new Error(data.error || "Something went wrong");
       }
+      const badgeImageMap = {
+        "eco-hero":
+          "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafybeicaqwv5lpgo5qehap2pgmru2cg5kyzxg4ppgxfbu6cefffekjt53a",
+        "top-lister":
+          "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafybeifmgn5uzwbuadessy3fhz5ub23y6gdghv2sw7riqvqlpilvfufce4",
+        "golden-reputation":
+          "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafybeicimoydhwij2hij3ibz56vmzflaxzofxwgiablfvkzhvpoxqb7dre",
+      };
       console.log("Badges:", data.badges);
       const mapped = data.badges.map((badge) => ({
         ...badge,
@@ -307,7 +311,7 @@ export default function ProfilePage() {
   }
 
   if (!isAuthenticated) {
-    return <p>You are not logged in.</p>
+    return <p>You are not logged in.</p>;
   }
   return (
     <div className="mt-16 min-h-screen bg-gray-50 dark:bg-gray-800">
