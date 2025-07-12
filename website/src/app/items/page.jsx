@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, Heart, Eye, Star, Calendar, Shirt, SlidersHorizontal, Grid3X3, List, Sparkles } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import ProtectedRoute from "@/components/ProtectedRoute"
+
 
 // Dummy data - In real app, this would come from Python API
 const dummyItems = [
@@ -272,6 +274,7 @@ export default function ItemsPage() {
   }
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900 mt-16">
       {/* Header */}
       <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 sticky top-16 z-40">
@@ -595,5 +598,6 @@ export default function ItemsPage() {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   )
 }
