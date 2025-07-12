@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Badge } from "./ui/badge"
 
 export default function Navbar() {
   console.log("NAVBVAR")
@@ -85,6 +86,7 @@ export default function Navbar() {
                         </AvatarFallback>
                       </Avatar>
                       <span className="hidden md:inline">{user?.username || 'Profile'}</span>
+                      <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 hidden md:inline text-white">{user?.points || '0'} Points</Badge>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">

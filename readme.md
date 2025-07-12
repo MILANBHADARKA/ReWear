@@ -1,7 +1,7 @@
 # ReWear – Community Clothing Exchange
 
 ## Overview
-ReWear is a web-based platform that enables users to exchange unused clothing through direct swaps, purchase, or rental using a point-based system. The platform incorporates AI-powered image processing and chatbot functionality to promote sustainable fashion and reduce textile waste by encouraging users to reuse wearable garments instead of discarding them.
+ReWear is a web-based platform that enables users to exchange unused clothing through direct swaps, purchase, or rental using a point-based system. The platform incorporates AI-powered image processing and assistant functionalities to promote sustainable fashion and reduce textile waste by encouraging users to reuse wearable garments instead of discarding them.
 
 
 ## ✨ Key Features
@@ -13,11 +13,19 @@ ReWear is a web-based platform that enables users to exchange unused clothing th
 - **Point-based Economy**: Users start with initial points for transactions
 
 ### 🤖 AI-Powered Features
-- **Image Classification Model**: 
-  - **Type/Genre Classification**: Categorizes clothes (casual, party wear, formal, etc.)
-  - **Condition Assessment**: Evaluates clothing condition (good, average, poor)
-- **Smart Chatbot**: AI assistant that suggests clothes based on user queries
-  - Example: "I need some party wear in red color" → Returns matching community uploads
+- **💬 Semantic Search**:
+  - Search Assistant that helps users find items based on queries.
+  - Example: “Show me black jackets for parties” → Returns matching community uploads.
+- **💲 Intelligent Pricing Model**:
+  - Suggest Cost: Uses real-time brand pricing (via web search Serper Dev tool) and item details (brand, title, description, date of purchase) to suggest a fair resale price.
+  - Rental Pricing: Calculates rental price based on resale value and rental duration.
+- **🌐 Live Web Price Integration**:
+  - Fetches the current market price of the brand/item using the Serper API to keep pricing suggestions up-to-date and realistic.
+- **🖼️ Image Search**:
+  - Finds visually similar or matching product images from external sources or community uploads to help users see real examples and styles.
+- **✍️ User Feedback & Sentiment Analysis**:
+  - Feedback Collection: Users can leave feedback or reviews for uploaded clothing items.
+  - Sentiment Analysis: Automatically detects whether feedback is positive, negative, or neutral.
 
 ### 👥 User Roles
 
@@ -25,7 +33,7 @@ ReWear is a web-based platform that enables users to exchange unused clothing th
 - Upload clothing items to the gallery
 - Purchase/rent clothes using points
 - Browse and search clothing inventory
-- Interact with AI chatbot for recommendations
+- Interact with the AI assistant for recommendations
 - View transaction history
 
 #### 🛡️ Admin Features
@@ -36,6 +44,8 @@ ReWear is a web-based platform that enables users to exchange unused clothing th
   - Sales tracking (per day/hour)
   - Visual charts and analysis
   - User activity monitoring
+-**Item/User Removal criteria**:
+  -If more than 3 negative sentiments are found in an item, then a mail is sent to the admin for the removal of the item.
 
 ### 📊 Analytics & Insights
 - Real-time sales dashboard
@@ -43,8 +53,36 @@ ReWear is a web-based platform that enables users to exchange unused clothing th
 - User engagement metrics
 - Clothing category popularity analysis
 
-## 🛠️ Technical Stack
-*To be updated as development progresses*
+## 🚀 Tech Stack
+
+### 🌐 Web
+- **Frontend and Backend**:
+  - Next.js 15
+  - Tailwind
+  - Shadcn
+  - MongoDB
+  - Cloudinary
+  - JsonWebToken
+  - Bcryptjs
+  - Resend
+  - Axios
+
+
+---
+
+### 🧠 Machine Learning / AI
+- **Groq LLM (llama3-8b-8192)** – Intelligent price suggestion & rental pricing
+- **Serper API** – Real-time web search integration for live pricing data
+- **Image Classification Models** – Categorize clothes by type & assess condition
+- **Sentiment Analysis** – Understand user feedback (positive/negative/neutral)
+- **Smart Chatbot** – NLP-driven assistant for personalized item search
+
+---
+
+### 🔗 Web3 / NFTs
+- **Wallet Integration**: WalletConnect / MetaMask
+- **Smart Contracts**: Solidity (ERC-721 for badges)
+- **Protocol**: Unlock Protocol for subscriptions
 
 ## Team Members
 

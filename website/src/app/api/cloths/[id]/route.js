@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/dbConnect';
 import Cloth from '@/model/cloth';
-import User from '@/model/user'; 
 import mongoose from 'mongoose';
 
 export async function GET(request, { params }) {
@@ -24,12 +23,18 @@ export async function GET(request, { params }) {
 
     return NextResponse.json({
       id: item._id.toString(),
-      name: item.itemName,
-      description: item.itemDescription,
-      images: item.itemImageUrls,
+      name: item.name,
+      description: item.description,
+      images: item.images,
       uploader: item.Uploader?.name || "Unknown",
       status: item.status,
-      points: item.points
+      points: item.points,
+      size: item.size,
+      condition: item.condition,
+      type: item.type,
+      tags: item.tags,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt
     });
   } catch (err) {
     console.error("Error fetching item:", err);

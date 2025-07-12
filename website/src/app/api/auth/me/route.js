@@ -28,7 +28,15 @@ export async function GET() {
 
     return new Response(JSON.stringify({
       success: true,
-      user
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        points: user.points
+      }
     }), { status: 200 });
 
   } catch (error) {
