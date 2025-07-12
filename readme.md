@@ -102,6 +102,48 @@ ReWear is a web-based platform that enables users to exchange unused clothing th
 - Build a community-driven platform
 - Implement efficient point-based economy
 
+# 🌱 Future Plans & Enhancements
+
+This section outlines planned features and improvements to make the platform smarter, safer, and even more user-friendly.
+
+---
+
+## 📍 Location-Based Filter
+- Show items available near the user's location.
+- Helps users find nearby sellers and enables faster pickup or delivery.
+- Supports sustainable and local community-driven resale.
+
+---
+
+## 🛡️ Security Guardrails
+- Detect and prevent non-clothing items from being uploaded.
+- Use AI image classification to ensure only valid clothing items are listed.
+- Maintain platform focus and safety.
+
+---
+
+## 📱 Responsive Showcase
+- Fully responsive frontend for seamless experience on desktop, tablet, and mobile.
+- Dynamic layouts for product cards, large images, and quick actions.
+
+---
+
+## 🤖 Agentic AI (CrewAI) for Cost Suggestion
+- Integrate CrewAI to make the price suggestion pipeline collaborative.
+- Multiple specialized agents: market research, price adjuster, fashion trend analyst.
+- Produce smarter and more explainable pricing recommendations.
+
+---
+
+✨ These improvements aim to make the project more:
+- Scalable
+- Trustworthy
+- User-friendly
+- Aligned with real-world needs in circular fashion & sustainable resale.
+
+> ⚙️ Feel free to contribute or suggest more ideas!
+
+
 ## 🤝 Contributing
 This is a collaborative hackathon project by the team members listed above. 
 
