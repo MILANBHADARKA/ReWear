@@ -1,6 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
 import { Repeat, Star, Shield, Zap, Heart, Globe } from "lucide-react"
+import MetaMaskGate from "./MetaMaskGate"
 
 export default function FeaturesSection() {
   const features = [

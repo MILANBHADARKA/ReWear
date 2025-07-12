@@ -28,13 +28,6 @@ import { useUser } from "@/context/UserContext";
 
 export default function ProfilePage() {
   const { user, isAuthenticated, isLoading, logout } = useUser();
-  // const [user, setUser] = useState({
-  //   name: "Suryadeep Gohil",
-  //   email: "suryadeep@example.com",
-  //   points: 120,
-  //   address: "0x123...abcd",
-  // });
-
   const [loading, setLoading] = useState(false);
 
   const [stats, setStats] = useState({
@@ -55,21 +48,34 @@ export default function ProfilePage() {
     }
     setLikedItems(newLikedItems);
   };
+ const [badges, setBadges] = useState([]);
 
-  const [bages, setbages] = useState([
-    {
-      name: "Eco Hero",
-      description: "Redeemed or swapped 10+ items, reducing textile waste.",
-    },
-    {
-      name: "Top Lister",
-      description: "Uploaded 10+ items to the platform.",
-    },
-    {
-      name: "Golden Reputation",
-      description: "No negative feedback. Trusted by all.",
-    },
-  ]);
+  useEffect(() => {
+    async function getBadges() {
+      const fetchedBadges = await fetchUserBadges();
+      setBadges(fetchedBadges);
+    }
+
+    getBadges(); 
+  }, []);
+
+    async function fetchUserBadges() {
+    try {
+      const response = await fetch("/api/badge/currentUser");
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+      console.log("Badges:", data.badges);
+      return data.badges;
+    } catch (error) {
+      console.error("Failed to fetch badges:", error.message);
+      return [];
+    }
+  }
+
   const dummyItems = [
     {
       id: 1,

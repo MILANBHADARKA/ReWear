@@ -1,12 +1,11 @@
-import { connectToDB } from "@/lib/mongodb";
+import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
 import { getAllBadgesForUser } from "../badgeservice";
-import { getUser } from "@/lib/getUser"
 import axios from "axios";
 
 export async function GET(request) {
   try {
-    await connectToDB();
+    await dbConnect();
 
     const url = new URL(request.url);
     const urluserId = url.searchParams.get("id");
@@ -21,16 +20,16 @@ export async function GET(request) {
     if (urluserId) {
       userId = urluserId;
       user = await User.findById(userId)
-        .select("firstName lastName email metamaskAddress")
+        .select("username email metamaskAddress")
         .lean();
     }
     console.log("matamask User ID:", userId);
 
 
-    if (!user.metamaskAddress) {
+    if (!user.MetaMaskAddress) {
       return Response.json({ error: "metamaskAddress not found" }, { status: 404 });
     }
-    const badges = await getAllBadgesForUser(user.metamaskAddress);
+    const badges = await getAllBadgesForUser(user.MetaMaskAddress);
     console.log(badges)
 
     

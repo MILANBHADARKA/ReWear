@@ -8,7 +8,7 @@ export const MetaMaskProvider = ({ children }) => {
   const [account, setAccount] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(true);
-  const [isLoading, setIsLoading] = useState(true); // 👈 added
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -70,4 +70,10 @@ export const MetaMaskProvider = ({ children }) => {
   );
 };
 
-export const useMetaMask = () => useContext(MetaMaskContext);
+export const useMetaMask = () => {
+  const context = useContext(MetaMaskContext);
+  if (!context) {
+    throw new Error("useMetaMask must be used within a MetaMaskProvider");
+  }
+  return context;
+};

@@ -4,6 +4,7 @@ import "./globals.css";
 import { UserProvider } from "@/context/UserContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { MetaMaskProvider } from "@/context/MetaMaskProvider";
+import MetaMaskGate from "@/components/MetaMaskGate";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <UserProvider>
             <MetaMaskProvider>
-            {children}
+              {children}
             </MetaMaskProvider>
           </UserProvider>
         </ThemeProvider>

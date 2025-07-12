@@ -1,24 +1,14 @@
 import {contract} from './webthreesetup'
 const BADGE_METADATA = {
-  "Climate Modeler": "ipfs//bafkreiadnktt4bxjezdhgyoqnr3nra7n62ek3bov3bvpuabbere4qtszze",
-  "GeoEconomist": "ipfs//bafkreic2ctjpgiaudcnsqxvj3aq563zo6k7mqpwznqkzcnkay6s22vgene", 
-  "First Sim Run": "ipfs//bafkreiaftb7dvnz45g63xmvcrfovvg4ml3bqsjv4yo2v522dtpeohd7a7y",
-  "Power User": "ipfs//bafkreifrmx4xl6hdnevuy3ihq4btldqc2badskd4oxse7oxu6bpgvwiumu",
-  "Simulation Marathoner": "ipfs//bafkreiakmptdpmzjxervj5bbvwvsh3czjcddwjnj4o323wsjl7uth2s4f4",
-  "Community Contributor": "ipfs//bafkreia2xi5lufwgnawb3rzaflkwijsthnoat6jfvykwsgbpoy5jkkmqhe",
-  "Insightful Modeler": "ipfs//bafkreiblzd5mucfqun3rtudypnqiswnivtiwkjmyuh2lrjpesm4k6bjpku",
-  "Bug Hunter": "ipfs//bafybeidcqxp3xkph2alq4f6refexa746lzkedyje3o66tfiwefnw77yv5u"
+  "eco-hero": "ipfs://bafkreifz6ligifhpgfhmgjxqmjufuqgvhptormdbbsxcciigjgrdu26wji",
+  "top-lister": "ipfs://bafkreidgyxdx5s636iyfigjfmiezqdoqtepicodycn2gkfdw4hmxf67x64", 
+  "golden-reputation": "ipfs://bafkreig7uxpbgxsoifhd7cxhzphxmfemf5qf6ja6xlszbvopbpvmt4ywsa"
 };
 
 const GET_BADGE_URL = {
-  "Climate Modeler": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreia2xi5lufwgnawb3rzaflkwijsthnoat6jfvykwsgbpoy5jkkmqhe",
-  "GeoEconomist": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreic2ctjpgiaudcnsqxvj3aq563zo6k7mqpwznqkzcnkay6s22vgene", 
-  "First Sim Run": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreiaftb7dvnz45g63xmvcrfovvg4ml3bqsjv4yo2v522dtpeohd7a7y",
-  "Power User": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreifrmx4xl6hdnevuy3ihq4btldqc2badskd4oxse7oxu6bpgvwiumu",
-  "Simulation Marathoner": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreiakmptdpmzjxervj5bbvwvsh3czjcddwjnj4o323wsjl7uth2s4f4",
-  "Community Contributor": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreiadnktt4bxjezdhgyoqnr3nra7n62ek3bov3bvpuabbere4qtszze",
-  "Insightful Modeler": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreiblzd5mucfqun3rtudypnqiswnivtiwkjmyuh2lrjpesm4k6bjpku",
-  "Bug Hunter": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreiarfhskqkvhfsxqi4nk6lebr5gxdgsujyeiqoa3adoxthk7i5rgvu"
+   "eco-hero": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreifz6ligifhpgfhmgjxqmjufuqgvhptormdbbsxcciigjgrdu26wji",
+  "top-lister": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreidgyxdx5s636iyfigjfmiezqdoqtepicodycn2gkfdw4hmxf67x64", 
+  "golden-reputation": "https://aquamarine-urban-firefly-16.mypinata.cloud/ipfs/bafkreig7uxpbgxsoifhd7cxhzphxmfemf5qf6ja6xlszbvopbpvmt4ywsa"
 }
 
 function getURLfromBadgeName(badgeName){
