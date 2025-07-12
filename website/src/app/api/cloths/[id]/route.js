@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/dbConnect';
 import Cloth from '@/model/cloth';
+import User from '@/model/user'; 
 import mongoose from 'mongoose';
 
 export async function GET(request, { params }) {
@@ -26,7 +27,7 @@ export async function GET(request, { params }) {
       name: item.itemName,
       description: item.itemDescription,
       images: item.itemImageUrls,
-      uploader: item.Uploader?.username || "Unknown",
+      uploader: item.Uploader?.name || "Unknown",
       status: item.status,
       points: item.points
     });
