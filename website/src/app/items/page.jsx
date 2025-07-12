@@ -508,7 +508,6 @@ export default function ItemsPage() {
 
                   <CardContent className="p-4">
                     <div className="space-y-3">
-                      {/* Title & Brand */}
                       <div>
                         <h3 className="font-semibold text-lg text-gray-900 dark:text-white line-clamp-1">
                           {item.title}
