@@ -31,9 +31,24 @@ const userSchema = new Schema({
     },
     points:{
         type: Number,
-        default: 50,
+        default: 30,
         min: [0, "Points must be a non-negative number"]
-    }
+    },
+    totalSolds: {
+        type: Number,
+        default: 0,
+        min: [0, "Total solds must be a non-negative number"]
+    },
+    totalBoughts: {
+        type: Number,
+        default: 0,
+        min: [0, "Total boughts must be a non-negative number"]
+    },
+    negetiveFeedbacks: {
+        type: Number,
+        default: 0,
+        min: [0, "Negative feedbacks must be a non-negative number"]
+    },
 },{
     timestamps: true
 })

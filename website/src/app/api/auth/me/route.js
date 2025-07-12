@@ -34,7 +34,8 @@ export async function GET() {
         email: user.email,
         profilePicture: user.profilePicture,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
+        updatedAt: user.updatedAt,
+        points: user.points
       }
     }), { status: 200 });
 

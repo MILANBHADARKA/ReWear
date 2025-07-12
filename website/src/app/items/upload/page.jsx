@@ -11,15 +11,19 @@ import { Badge } from "@/components/ui/badge"
 import { Upload, X, Plus, Camera, DollarSign, Sparkles, CheckCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import axios from "axios"
+import { useUser } from "@/context/UserContext"
 
 export default function UploadItemPage() {
   const router = useRouter()
+  const { user } = useUser();
   const [currentStep, setCurrentStep] = useState(1)
   const [uploadedImages, setUploadedImages] = useState([])
   const [dragActive, setDragActive] = useState(false)
   const [tags, setTags] = useState([])
   const [newTag, setNewTag] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -84,36 +88,85 @@ export default function UploadItemPage() {
   }
 
   const handleSubmit = async () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
-    // Simulate API call to Python backend
     try {
-      // In real app, this would be:
-      // const formDataToSend = new FormData()
-      // uploadedImages.forEach((img, index) => {
-      //   formDataToSend.append(`image_${index}`, img.file)
-      // })
-      // formDataToSend.append('data', JSON.stringify({ ...formData, tags }))
-      //
-      // const response = await fetch('/api/items/upload', {
-      //   method: 'POST',
-      //   body: formDataToSend
-      // })
+      const formData2 = new FormData();
 
-      // Simulate delay
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // Append all form data
+      formData2.append('title', formData.title);
+      formData2.append('descriptions', formData.description);
+      formData2.append('uploaderId', user._id); // Make sure this is a valid ObjectId
+      formData2.append('points', formData.price);
+      formData2.append('size', formData.size);
+      formData2.append('condition', formData.condition);
+      formData2.append('type', formData.type);
+      formData2.append('description', formData.description);
+      formData2.append('brand', formData.brand);
+      formData2.append('dateBought', formData.dateBought);
+      // Append tags
+      tags.forEach(tag => {
+        formData2.append('tags', tag);
+      });
 
-      setCurrentStep(4) // Success step
+      // Append images
+      let images = [];
 
-      setTimeout(() => {
-        router.push("/items")
-      }, 3000)
+      await Promise.all(
+        uploadedImages.map(async (image) => {
+          const formData = new FormData();
+          formData.append("file", image.file); // Must be a File object
+
+          try {
+            const api = await axios.post("/api/images_upload", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if (api.data.success) {
+              images.push(api.data.image);
+            }
+          } catch (err) {
+            console.error("Upload error:", err);
+          }
+        })
+      );
+
+      formData2.append('images', JSON.stringify(images));
+
+      // console.log("Submitting form data:",  {
+      //   title: formData.title,
+      //   descriptions: formData.description,
+      //   uploaderId: user._id,
+      //   points: formData.price,
+      //   size: formData.size,
+      //   condition: formData.condition,
+      //   type: formData.type,
+      //   description: formData.description,
+      //   tags: tags,
+      // });
+
+      const response = await fetch('/api/cloths/add', {
+        method: 'POST',
+        body: formData2
+        // Don't set Content-Type header - it will be set automatically
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to upload item");
+      }
+
+      setCurrentStep(4);
+      setTimeout(() => router.push('/items'), 2000);
     } catch (error) {
-      console.error("Upload failed:", error)
+      console.error("Upload failed:", error);
+      alert(error.message || "Failed to upload item");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const steps = [
     { number: 1, title: "Photos", description: "Upload item images" },
@@ -123,9 +176,12 @@ export default function UploadItemPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900 py-8">
+    <div className="mt-16 min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* {isSubmitting && (<Loader)} */}
         {/* Header */}
+
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
             List Your Item
@@ -147,8 +203,8 @@ export default function UploadItemPage() {
               <div key={step.number} className="flex items-center">
                 <div
                   className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${currentStep >= step.number
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 border-transparent text-white"
-                      : "border-gray-300 dark:border-gray-600 text-gray-400"
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 border-transparent text-white"
+                    : "border-gray-300 dark:border-gray-600 text-gray-400"
                     }`}
                 >
                   {currentStep > step.number ? (
@@ -160,8 +216,8 @@ export default function UploadItemPage() {
                 {index < steps.length - 1 && (
                   <div
                     className={`w-16 h-0.5 mx-2 transition-all duration-300 ${currentStep > step.number
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600"
-                        : "bg-gray-300 dark:bg-gray-600"
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600"
+                      : "bg-gray-300 dark:bg-gray-600"
                       }`}
                   />
                 )}
@@ -189,8 +245,8 @@ export default function UploadItemPage() {
                 <div className="space-y-6">
                   <div
                     className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${dragActive
-                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                        : "border-gray-300 dark:border-gray-600 hover:border-blue-400"
+                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                      : "border-gray-300 dark:border-gray-600 hover:border-blue-400"
                       }`}
                     onDragEnter={handleDrag}
                     onDragLeave={handleDrag}
@@ -209,7 +265,7 @@ export default function UploadItemPage() {
                       onChange={(e) => handleImageUpload(e.target.files)}
 
                       id="image-upload"
-                      className="cursor-pointer "
+                      className="cursor-pointer float-right bg-gray-100 dark:bg-gray-700 rounded-lg p-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     />
 
                     <p className="text-xs text-gray-500 mt-4">Maximum 5 images, up to 10MB each</p>
@@ -311,6 +367,23 @@ export default function UploadItemPage() {
                     </div>
 
                     <div className="space-y-2">
+                      <Label>Type *</Label>
+                      <Select value={formData.type} onValueChange={(value) => handleInputChange("type", value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="upper">Upper</SelectItem>
+                          <SelectItem value="bottom">Bottom</SelectItem>
+                          <SelectItem value="footwear">Footwear</SelectItem>
+                          <SelectItem value="outerwear">Outerwear</SelectItem>
+                          <SelectItem value="accessories">Accessories</SelectItem>
+                          <SelectItem value="others">Others</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
                       <Label>Size *</Label>
                       <Select value={formData.size} onValueChange={(value) => handleInputChange("size", value)}>
                         <SelectTrigger>
@@ -348,7 +421,7 @@ export default function UploadItemPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="dateBought">Date Purchased</Label>
                       <Input
@@ -398,7 +471,7 @@ export default function UploadItemPage() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="price">Selling Price *</Label>
+                      <Label htmlFor="price">Selling Points *</Label>
                       <div className="relative">
                         <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                         <Input
@@ -411,20 +484,7 @@ export default function UploadItemPage() {
                         />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="originalPrice">Original Price</Label>
-                      <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                        <Input
-                          id="originalPrice"
-                          type="number"
-                          placeholder="0.00"
-                          className="pl-10"
-                          value={formData.originalPrice}
-                          onChange={(e) => handleInputChange("originalPrice", e.target.value)}
-                        />
-                      </div>
-                    </div>
+
                   </div>
 
                   {formData.price && formData.originalPrice && (

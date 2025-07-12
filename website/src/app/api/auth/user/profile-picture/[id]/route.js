@@ -48,7 +48,7 @@ export async function PUT(request, { params }) {
 
             // Upload to Cloudinary
             const uploadResult = await cloudinary.uploader.upload(dataURI, {
-                folder: 'moneymate_user_profile_pictures',
+                folder: 'reware',
                 resource_type: 'image',
                 transformation: [
                     { width: 200, height: 200, crop: 'fill' }

@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, Heart, Eye, Star, Calendar, Shirt, SlidersHorizontal, Grid3X3, List, Sparkles } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import axios from "axios"
 
 // Dummy data - In real app, this would come from Python API
 const dummyItems = [
@@ -174,8 +175,8 @@ const dummyItems = [
 ]
 
 export default function ItemsPage() {
-  const [items, setItems] = useState(dummyItems)
-  const [filteredItems, setFilteredItems] = useState(dummyItems)
+  const [items, setItems] = useState([]);  // Initialize as empty array
+  const [filteredItems, setFilteredItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedSize, setSelectedSize] = useState("all")
@@ -187,64 +188,24 @@ export default function ItemsPage() {
   const [likedItems, setLikedItems] = useState(new Set())
 
   // Simulate API call to Python backend
-  const fetchItems = async (filters) => {
-    // In real app, this would be:
-    // const response = await fetch('/api/items', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(filters)
-    // })
-    // const data = await response.json()
-    // return data
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get("/api/cloths");
+      const result = response.data;
 
-    // For now, return dummy data
-    return dummyItems
-  }
-
-  useEffect(() => {
-    const applyFilters = () => {
-      const filtered = items.filter((item) => {
-        const matchesSearch =
-          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-
-        const matchesCategory =
-          selectedCategory === "all" || item.category.toLowerCase() === selectedCategory.toLowerCase()
-        const matchesSize = selectedSize === "all" || item.size === selectedSize
-        const matchesCondition =
-          selectedCondition === "all" || item.condition.toLowerCase() === selectedCondition.toLowerCase()
-
-        let matchesPrice = true
-        if (priceRange !== "all") {
-          const [min, max] = priceRange.split("-").map(Number)
-          matchesPrice = item.price >= min && (max ? item.price <= max : true)
-        }
-
-        return matchesSearch && matchesCategory && matchesSize && matchesCondition && matchesPrice
-      })
-
-      // Apply sorting
-      filtered.sort((a, b) => {
-        switch (sortBy) {
-          case "price-low":
-            return a.price - b.price
-          case "price-high":
-            return b.price - a.price
-          case "popular":
-            return b.likes - a.likes
-          case "newest":
-          default:
-            return new Date(b.datePosted) - new Date(a.datePosted)
-        }
-      })
-
-      setFilteredItems(filtered)
+      setItems(result.data);
+      setFilteredItems(result.data);
+      console.log("Fetched items:", result.data);
+      return result.data;  // ✅ RETURN HERE
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      return [];
     }
-
-    applyFilters()
-  }, [items, searchTerm, selectedCategory, selectedSize, selectedCondition, priceRange, sortBy])
+  };
+  useEffect(() => {
+    fetchItems();
+    // Only sets items and filteredItems once
+  }, []);
 
   const toggleLike = (itemId) => {
     const newLikedItems = new Set(likedItems)
@@ -334,24 +295,24 @@ export default function ItemsPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="partywear">Partywear</SelectItem>
-                          <SelectItem value="casual">Casual</SelectItem>
-                          <SelectItem value="formal">Formal</SelectItem>
-                          <SelectItem value="ethnic">Ethnic</SelectItem>
-                          <SelectItem value="sportswear">Sportswear</SelectItem>
-                          <SelectItem value="sleepwear">Sleepwear</SelectItem>
-                          <SelectItem value="streetwear">Streetwear</SelectItem>
-                          <SelectItem value="business">Business</SelectItem>
-                          <SelectItem value="vacation">Vacation</SelectItem>
-                          <SelectItem value="winterwear">Winterwear</SelectItem>
-                          <SelectItem value="summerwear">Summerwear</SelectItem>
-                          <SelectItem value="rainwear">Rainwear</SelectItem>
-                          <SelectItem value="loungewear">Loungewear</SelectItem>
-                          <SelectItem value="festival">Festival</SelectItem>
-                          <SelectItem value="college">College</SelectItem>
-                          <SelectItem value="wedding">Wedding</SelectItem>
-                          <SelectItem value="interview">Interview</SelectItem>
-                          <SelectItem value="maternity">Maternity</SelectItem>
-                          <SelectItem value="kidswear">Kidswear</SelectItem>
+                      <SelectItem value="casual">Casual</SelectItem>
+                      <SelectItem value="formal">Formal</SelectItem>
+                      <SelectItem value="ethnic">Ethnic</SelectItem>
+                      <SelectItem value="sportswear">Sportswear</SelectItem>
+                      <SelectItem value="sleepwear">Sleepwear</SelectItem>
+                      <SelectItem value="streetwear">Streetwear</SelectItem>
+                      <SelectItem value="business">Business</SelectItem>
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="winterwear">Winterwear</SelectItem>
+                      <SelectItem value="summerwear">Summerwear</SelectItem>
+                      <SelectItem value="rainwear">Rainwear</SelectItem>
+                      <SelectItem value="loungewear">Loungewear</SelectItem>
+                      <SelectItem value="festival">Festival</SelectItem>
+                      <SelectItem value="college">College</SelectItem>
+                      <SelectItem value="wedding">Wedding</SelectItem>
+                      <SelectItem value="interview">Interview</SelectItem>
+                      <SelectItem value="maternity">Maternity</SelectItem>
+                      <SelectItem value="kidswear">Kidswear</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -416,7 +377,7 @@ export default function ItemsPage() {
           {/* View Toggle & Results Count */}
           <div className="flex justify-between items-center">
             <p className="text-gray-600 dark:text-gray-400">
-              Showing {filteredItems.length} of {items.length} items
+              Showing {filteredItems?.length} of {items?.length} items
             </p>
             <div className="flex items-center space-x-2">
               <Button
@@ -442,12 +403,11 @@ export default function ItemsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
           layout
-          className={`grid gap-6 ${
-            viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
-          }`}
+          className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
+            }`}
         >
           <AnimatePresence>
-            {filteredItems.map((item, index) => (
+            {Array.isArray(filteredItems) && filteredItems.map((item, index) => (
               <motion.div
                 key={item.id}
                 layout
@@ -471,27 +431,17 @@ export default function ItemsPage() {
                     )}
 
                     {/* Like Button */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleLike(item.id)}
-                      className="absolute top-3 right-3 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 rounded-full p-2"
-                    >
-                      <Heart
-                        className={`h-4 w-4 ${
-                          likedItems.has(item.id) ? "fill-red-500 text-red-500" : "text-gray-600 dark:text-gray-400"
-                        }`}
-                      />
-                    </Button>
+    
 
                     {/* Image */}
                     <div className="relative aspect-square overflow-hidden">
                       <Image
-                        src={item.images[0] || "/placeholder.svg"}
+                        src={item?.images?.[0]?.replace(`["`, "").replace(`"]`, "") || "/placeholder.svg"}
                         alt={item.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
+
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
@@ -518,10 +468,9 @@ export default function ItemsPage() {
 
                       {/* Price */}
                       <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-gray-900 dark:text-white">${item.price}</span>
-                        <span className="text-sm text-gray-500 line-through">${item.originalPrice}</span>
+                        
                         <Badge variant="secondary" className="text-xs">
-                          {Math.round((1 - item.price / item.originalPrice) * 100)}% off
+                          {item.points} Points
                         </Badge>
                       </div>
 
@@ -534,13 +483,13 @@ export default function ItemsPage() {
                       {/* Seller Info */}
                       <div className="flex items-center space-x-2">
                         <Image
-                          src={item.seller.avatar || "/placeholder.svg"}
-                          alt={item.seller.name}
+                          src={item.seller?.avatar || "/placeholder.svg"}
+                          alt={item.seller?.username}
                           width={24}
                           height={24}
                           className="rounded-full"
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{item.seller.name}</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400">{item.seller.username}</span>
                         <div className="flex items-center">
                           <Star className="h-3 w-3 text-yellow-400 fill-current" />
                           <span className="text-xs text-gray-500 ml-1">{item.seller.rating}</span>
@@ -549,19 +498,10 @@ export default function ItemsPage() {
 
                       {/* Stats */}
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <div className="flex items-center space-x-3">
-                          <div className="flex items-center">
-                            <Eye className="h-3 w-3 mr-1" />
-                            {item.views}
-                          </div>
-                          <div className="flex items-center">
-                            <Heart className="h-3 w-3 mr-1" />
-                            {item.likes}
-                          </div>
-                        </div>
+                      
                         <div className="flex items-center">
                           <Calendar className="h-3 w-3 mr-1" />
-                          {new Date(item.datePosted).toLocaleDateString()}
+                          {new Date(item.createdAt).toLocaleDateString()}
                         </div>
                       </div>
                     </div>
@@ -573,7 +513,7 @@ export default function ItemsPage() {
         </motion.div>
 
         {/* No Results */}
-        {filteredItems.length === 0 && (
+        {filteredItems?.length === 0 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
             <Shirt className="h-16 w-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No items found</h3>
