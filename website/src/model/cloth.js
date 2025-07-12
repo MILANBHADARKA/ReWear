@@ -9,15 +9,31 @@ const clothSchema = new Schema({
         type: String,
         required: false
     },
-    itemImageUrl: {
-        type: String,
-        required: [true, "Image is required!"],
+    itemImageUrls: { 
+        type: [String],
+        required: [true, "At least one image is required"],
+        validate: {
+            validator: function (arr) {
+                return arr.length > 0;
+            },
+            message: "At least one image must be provided"
+        }
     },
     Uploader: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: [true, "User is required"]
     },
+    status: {
+        type: String,
+        enum: ['Available', 'Rented', 'Sold', 'Unavailable'],
+        default: 'Available'
+    },
+    points: {
+        type: Number,
+        required: true,
+        min: [0, "Points must be a non-negative number"]
+    }
 }, {
     timestamps: true
 });
