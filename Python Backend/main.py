@@ -7,6 +7,10 @@ from models.retriever import search_items
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from models.sentiments import analyze_sentiment
+from models.image_search import search_similar_items_by_image
+import numpy as np
+from PIL import Image
+from models.image_search import model
 
 app = FastAPI()
 
@@ -56,12 +60,16 @@ async def upload_item(
     # Generate new ID
     new_id = (max([item["id"] for item in clothes]) + 1) if clothes else 1
 
+    img = Image.open(file_location)
+    embedding = model.encode(img).tolist()
+    
     # Create new item
     new_item = {
         "id": new_id,
         "title": title,
         "description": description,
-        "image": file.filename
+        "image": file.filename,
+        "image_embedding": embedding
     }
 
     # Append and save
@@ -141,3 +149,15 @@ async def add_feedback(item_id: int, feedback: str):
         json.dump(clothes, f, indent=2)
 
     return {"message": "Feedback added", "sentiment": sentiment}
+
+
+@app.post("/search-by-image/")
+async def search_by_image(file: UploadFile = File(...), top_k: int = 3):
+    # Save temp file
+    query_path = UPLOAD_DIR / f"query_{file.filename}"
+    with open(query_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # Call helper function
+    results = search_similar_items_by_image(query_path, top_k=top_k)
+    return results

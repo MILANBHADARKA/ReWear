@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/dbConnect';
 import Cloth from '@/model/cloth';
+import User from '@/model/user'; 
 import mongoose from 'mongoose';
 
 export async function GET(request, { params }) {
@@ -14,7 +15,7 @@ export async function GET(request, { params }) {
     await connectDB();
 
     const item = await Cloth.findById(id)
-      .populate("Uploader", "name email")
+      .populate("Uploader", "username")
       .lean();
 
     if (!item) {
