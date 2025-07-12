@@ -6,7 +6,7 @@ jinja2  # for templating (optional, for admin panel UI)
 
 # Core ML and preprocessing
 tensorflow==2.14.0
-numpy
+numpy==1.26.4
 pillow
 opencv-python
 scikit-learn
