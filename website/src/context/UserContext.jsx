@@ -31,6 +31,7 @@ export const UserProvider = ({ children }) => {
       
       if (response.ok) {
         const data = await response.json()
+        console.log(data)
         setUser(data.user)
         setIsAuthenticated(true)
       } else {

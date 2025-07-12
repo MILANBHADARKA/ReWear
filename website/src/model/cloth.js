@@ -1,41 +1,64 @@
 import mongoose, { Schema } from "mongoose";
 
 const clothSchema = new Schema({
-    itemName: {
+  Uploader: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "User is required"]
+  },
+  status: {
+    type: String,
+    enum: ['Available', 'Rented', 'Sold', 'Unavailable'],
+    default: 'Available'
+  },
+  points: {
+    type: Number,
+    required: true,
+    min: [0, "Points must be a non-negative number"]
+  },
+  lists: [
+    {
+      title: {
         type: String,
-        required: [true, "Item Name is required"]
-    },
-    itemDescription: {
+        required: [true, "Title is required"]
+      },
+      descriptions: {
         type: String,
         required: false
-    },
-    itemImageUrls: { 
+      },
+      images: {
         type: [String],
         required: [true, "At least one image is required"],
         validate: {
-            validator: function (arr) {
-                return arr.length > 0;
-            },
-            message: "At least one image must be provided"
+          validator: function (arr) {
+            return arr.length > 0;
+          },
+          message: "At least one image must be provided in each list"
         }
-    },
-    Uploader: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: [true, "User is required"]
-    },
-    status: {
+      },
+      size: {
         type: String,
-        enum: ['Available', 'Rented', 'Sold', 'Unavailable'],
-        default: 'Available'
-    },
-    points: {
-        type: Number,
-        required: true,
-        min: [0, "Points must be a non-negative number"]
+        required: false
+      },
+      condition: {
+        type: String,
+      },
+      type: {
+        type: String,
+        required: false
+      },
+      description: {
+        type: String,
+        required: false
+      },
+      tags: {
+        type: [String],
+        default: []
+      }
     }
+  ]
 }, {
-    timestamps: true
+  timestamps: true
 });
 
 export default mongoose.models.Cloth || mongoose.model("Cloth", clothSchema);

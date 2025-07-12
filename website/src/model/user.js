@@ -28,6 +28,11 @@ const userSchema = new Schema({
     },
     verifyCodeExpires: {
         type: Date,
+    },
+    points:{
+        type: Number,
+        default: 50,
+        min: [0, "Points must be a non-negative number"]
     }
 },{
     timestamps: true
