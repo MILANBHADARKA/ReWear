@@ -11,6 +11,8 @@ from models.image_search import search_similar_items_by_image
 import numpy as np
 from PIL import Image
 from models.image_search import model
+from pydantic import BaseModel
+from models.suggest_cost import suggest_cost
 
 app = FastAPI()
 
@@ -98,30 +100,6 @@ def search(query: str):
     results = search_items(query)
     return {"results": results}
 
-# @app.post("/predict")
-# async def predict(file: UploadFile = File(...)):
-#     # Save uploaded image temporarily
-#     file_location = UPLOAD_DIR / file.filename
-#     with open(file_location, "wb") as buffer:
-#         shutil.copyfileobj(file.file, buffer)
-
-#     # Preprocess
-#     img_data = preprocess_image(file_location)
-
-#     # Predict type
-#     type_pred = type_model.predict(img_data)
-#     type_result = TYPE_LABELS[np.argmax(type_pred)]
-
-#     # Predict condition
-#     condition_pred = condition_model.predict(img_data)
-#     condition_result = CONDITION_LABELS[np.argmax(condition_pred)]
-
-#     return {
-#         "message": "Prediction successful",
-#         "type": type_result,
-#         "condition": condition_result
-#     }
-
 
 @app.post("/add-feedback/")
 async def add_feedback(item_id: int, feedback: str):
@@ -161,3 +139,20 @@ async def search_by_image(file: UploadFile = File(...), top_k: int = 3):
     # Call helper function
     results = search_similar_items_by_image(query_path, top_k=top_k)
     return results
+
+
+class ItemInfo(BaseModel):
+    title: str
+    description: str
+    brand: str
+    date_of_purchase: str
+
+@app.post("/suggest-cost/")
+async def suggest_cost_endpoint(item: ItemInfo):
+    price = suggest_cost(
+        item.title,
+        item.description,
+        item.brand,
+        item.date_of_purchase
+    )
+    return {"suggested_price": price}

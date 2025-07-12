@@ -73,9 +73,9 @@ export default function LoginPage() {
       newErrors.password = "Password is required"
     }
 
-    if (!formData.role) {
-      newErrors.role = "Please select your role"
-    }
+    // if (!formData.role) {
+    //   newErrors.role = "Please select your role"
+    // }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -239,19 +239,6 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-              </div>
-
-              <div>
-                <Select onValueChange={handleRoleChange} value={formData.role}>
-                  <SelectTrigger className="h-12 text-sm">
-                    <SelectValue placeholder="Select your role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="user">User</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
               </div>
 
               <div className="flex justify-between items-center">

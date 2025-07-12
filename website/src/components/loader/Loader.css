@@ -1,0 +1,399 @@
+/* Container */
+.rewear-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 200px;
+}
+
+/* Base loader */
+.rewear-loader {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Size variants */
+.rewear-loader--small {
+  transform: scale(0.7);
+}
+
+.rewear-loader--medium {
+  transform: scale(1);
+}
+
+.rewear-loader--large {
+  transform: scale(1.3);
+}
+
+/* Clothing hanger animation */
+.loader-hanger {
+  position: relative;
+  animation: hangerSwing 2s ease-in-out infinite;
+}
+
+.hanger-hook {
+  width: 4px;
+  height: 20px;
+  background: #8B4513;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.hanger-bar {
+  width: 60px;
+  height: 4px;
+  background: #8B4513;
+  border-radius: 2px;
+  margin-top: 2px;
+}
+
+.hanger-shoulders {
+  display: flex;
+  justify-content: space-between;
+  width: 80px;
+  margin-top: -2px;
+}
+
+.shoulder {
+  width: 25px;
+  height: 4px;
+  background: #8B4513;
+  border-radius: 2px;
+  transform-origin: center;
+}
+
+.shoulder.left {
+  transform: rotate(-20deg);
+}
+
+.shoulder.right {
+  transform: rotate(20deg);
+}
+
+/* Rotating clothing items */
+.loader-clothes {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 1rem 0;
+}
+
+.cloth-item {
+  position: absolute;
+  font-size: 24px;
+  animation: clothesRotate 3s linear infinite;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50px 50px;
+}
+
+.cloth-item.shirt {
+  animation-delay: 0s;
+}
+
+.cloth-item.pants {
+  animation-delay: 0.75s;
+}
+
+.cloth-item.dress {
+  animation-delay: 1.5s;
+}
+
+.cloth-item.jacket {
+  animation-delay: 2.25s;
+}
+
+/* Points animation */
+.loader-points {
+  display: flex;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.point {
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(45deg, #4CAF50, #81C784);
+  border-radius: 50%;
+  animation: pointsPulse 1.5s ease-in-out infinite;
+}
+
+.point:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.point:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Message styling */
+.loader-message {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: #555;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.message-dots {
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.message-dots span {
+  animation: dotsAnimation 1.5s ease-in-out infinite;
+  opacity: 0;
+}
+
+.message-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.message-dots span:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.message-dots span:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Variant-specific styles */
+.rewear-loader--upload .loader-hanger {
+  animation-duration: 1.5s;
+}
+
+.rewear-loader--upload .point {
+  background: linear-gradient(45deg, #2196F3, #64B5F6);
+}
+
+.rewear-loader--ai .loader-clothes {
+  animation: aiGlow 2s ease-in-out infinite alternate;
+}
+
+.rewear-loader--ai .point {
+  background: linear-gradient(45deg, #9C27B0, #BA68C8);
+}
+
+.rewear-loader--chatbot .cloth-item {
+  animation-duration: 2s;
+}
+
+.rewear-loader--chatbot .point {
+  background: linear-gradient(45deg, #FF9800, #FFB74D);
+}
+
+.rewear-loader--transaction .point {
+  background: linear-gradient(45deg, #4CAF50, #66BB6A);
+  animation-duration: 1s;
+}
+
+/* Theme-specific styles */
+.rewear-loader-container--light {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.rewear-loader-container--dark {
+  background-color: rgba(18, 18, 18, 0.9);
+}
+
+/* Light theme hanger */
+.rewear-loader--light .hanger-hook,
+.rewear-loader--light .hanger-bar,
+.rewear-loader--light .shoulder {
+  background: #8B4513;
+}
+
+/* Dark theme hanger */
+.rewear-loader--dark .hanger-hook,
+.rewear-loader--dark .hanger-bar,
+.rewear-loader--dark .shoulder {
+  background: #D2B48C;
+}
+
+/* Light theme message */
+.loader-message--light {
+  color: #333;
+}
+
+/* Dark theme message */
+.loader-message--dark {
+  color: #e0e0e0;
+}
+
+/* Theme-specific point colors */
+.rewear-loader--light .point {
+  background: linear-gradient(45deg, #4CAF50, #81C784);
+}
+
+.rewear-loader--dark .point {
+  background: linear-gradient(45deg, #66BB6A, #A5D6A7);
+}
+
+/* Variant-specific theme adaptations */
+.rewear-loader--upload.rewear-loader--light .point {
+  background: linear-gradient(45deg, #2196F3, #64B5F6);
+}
+
+.rewear-loader--upload.rewear-loader--dark .point {
+  background: linear-gradient(45deg, #42A5F5, #90CAF9);
+}
+
+.rewear-loader--ai.rewear-loader--light .point {
+  background: linear-gradient(45deg, #9C27B0, #BA68C8);
+}
+
+.rewear-loader--ai.rewear-loader--dark .point {
+  background: linear-gradient(45deg, #AB47BC, #CE93D8);
+}
+
+.rewear-loader--chatbot.rewear-loader--light .point {
+  background: linear-gradient(45deg, #FF9800, #FFB74D);
+}
+
+.rewear-loader--chatbot.rewear-loader--dark .point {
+  background: linear-gradient(45deg, #FFA726, #FFCC02);
+}
+
+.rewear-loader--transaction.rewear-loader--light .point {
+  background: linear-gradient(45deg, #4CAF50, #66BB6A);
+}
+
+.rewear-loader--transaction.rewear-loader--dark .point {
+  background: linear-gradient(45deg, #66BB6A, #81C784);
+}
+
+/* Dark theme AI glow effect */
+.rewear-loader--ai.rewear-loader--dark .loader-clothes {
+  animation: aiGlowDark 2s ease-in-out infinite alternate;
+}
+
+@keyframes aiGlowDark {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(171, 71, 188, 0.6));
+  }
+  100% {
+    filter: drop-shadow(0 0 15px rgba(171, 71, 188, 0.9));
+  }
+}
+
+/* Keyframe animations */
+@keyframes hangerSwing {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes clothesRotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(40px) rotate(0deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(40px) rotate(-360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pointsPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes dotsAnimation {
+  0%, 60%, 100% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+@keyframes aiGlow {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(156, 39, 176, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 15px rgba(156, 39, 176, 0.8));
+  }
+}
+
+/* Full screen overlay */
+.rewear-loader-container--fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Theme-specific full screen backgrounds */
+.rewear-loader-container--fullscreen.rewear-loader-container--light {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.rewear-loader-container--fullscreen.rewear-loader-container--dark {
+  background-color: rgba(18, 18, 18, 0.85);
+}
+
+/* Ensure loader content is centered in full screen */
+.rewear-loader-container--fullscreen .rewear-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Enhanced message styling for full screen */
+.rewear-loader-container--fullscreen .loader-message {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Prevent body scroll when loader is active */
+.rewear-loader-container--fullscreen {
+  overflow: hidden;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .rewear-loader-container {
+    padding: 1rem;
+    min-height: 150px;
+  }
+  
+  .loader-message {
+    font-size: 14px;
+  }
+  
+  .rewear-loader--large {
+    transform: scale(1.1);
+  }
+}
