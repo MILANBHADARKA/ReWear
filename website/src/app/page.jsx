@@ -5,6 +5,7 @@ import ReviewsCarousel from "@/components/reviews-carousel"
 import FeedbackForm from "@/components/feedback-form"
 import ContactSection from "@/components/contact-section"
 import Footer from "@/components/footer"
+import Loader from "@/components/loader/Loader"
 
 export default function Home() {
   return (

@@ -23,6 +23,7 @@ import {
 import Link from "next/link"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
+import ProtectedRoute from "@/components/ProtectedRoute"
 
 // Dummy data - In real app, this would come from Python API
 const dummyItem = {
@@ -176,6 +177,7 @@ export default function ItemDetailPage() {
   }
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900">
       {/* Back Button */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
@@ -390,5 +392,6 @@ export default function ItemDetailPage() {
         </motion.div>
       </div>
     </div>
+    </ProtectedRoute>
   )
 }

@@ -23,6 +23,11 @@ const userSchema = new Schema({
     profilePicture: {
         type: String,
     },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    },
     verifyCode: {        //for forgot password
         type: String,
     },
@@ -33,6 +38,10 @@ const userSchema = new Schema({
         type: Number,
         default: 30,
         min: [0, "Points must be a non-negative number"]
+    },
+    MetaMaskAddress:{
+        type: String,
+        required: false
     },
     totalSolds: {
         type: Number,

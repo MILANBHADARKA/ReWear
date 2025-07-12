@@ -11,6 +11,8 @@ from models.image_search import search_similar_items_by_image
 import numpy as np
 from PIL import Image
 from models.image_search import model
+from pydantic import BaseModel
+from models.suggest_cost import suggest_cost
 
 app = FastAPI()
 
@@ -98,30 +100,6 @@ def search(query: str):
     results = search_items(query)
     return {"results": results}
 
-# @app.post("/predict")
-# async def predict(file: UploadFile = File(...)):
-#     # Save uploaded image temporarily
-#     file_location = UPLOAD_DIR / file.filename
-#     with open(file_location, "wb") as buffer:
-#         shutil.copyfileobj(file.file, buffer)
-
-#     # Preprocess
-#     img_data = preprocess_image(file_location)
-
-#     # Predict type
-#     type_pred = type_model.predict(img_data)
-#     type_result = TYPE_LABELS[np.argmax(type_pred)]
-
-#     # Predict condition
-#     condition_pred = condition_model.predict(img_data)
-#     condition_result = CONDITION_LABELS[np.argmax(condition_pred)]
-
-#     return {
-#         "message": "Prediction successful",
-#         "type": type_result,
-#         "condition": condition_result
-#     }
-
 
 @app.post("/add-feedback/")
 async def add_feedback(item_id: int, feedback: str):
@@ -161,3 +139,24 @@ async def search_by_image(file: UploadFile = File(...), top_k: int = 3):
     # Call helper function
     results = search_similar_items_by_image(query_path, top_k=top_k)
     return results
+
+class ItemInfo(BaseModel):
+    brand: str
+    title: str
+    description: str
+    date_of_purchase: str
+    rent_duration_days: int  # Add this field
+
+@app.post("/suggest-cost/")
+async def suggest_cost_endpoint(item: ItemInfo):
+    result = suggest_cost(
+        brand=item.brand,
+        title=item.title,
+        description=item.description,
+        date_of_purchase=item.date_of_purchase,
+        rent_duration_days=item.rent_duration_days
+    )
+    return {
+        "suggested_resale_price_usd": result["resale_price_usd"],
+        "suggested_rental_price_usd": result["rental_price_usd"]
+    }

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import axios from "axios"
 import { useUser } from "@/context/UserContext"
+import ProtectedRoute from "@/components/ProtectedRoute"
 
 export default function UploadItemPage() {
   const router = useRouter()
@@ -176,6 +177,7 @@ export default function UploadItemPage() {
   ]
 
   return (
+    <ProtectedRoute>
     <div className="mt-16 min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -578,5 +580,6 @@ export default function UploadItemPage() {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   )
 }
