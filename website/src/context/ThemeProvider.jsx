@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
-export const ThemeContext = createContext({
+const ThemeContext = createContext({
   theme: 'light',
   toggleTheme: () => {},
 });
@@ -13,7 +13,9 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
+    document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(savedTheme);
+    
   }, []);
 
   const toggleTheme = () => {
@@ -21,8 +23,7 @@ export const ThemeProvider = ({ children }) => {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
 
-    // Replace class on <html> element
-    document.documentElement.classList.remove(theme);
+    document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(newTheme);
   };
 
@@ -34,4 +35,3 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const useTheme = () => useContext(ThemeContext);
-
