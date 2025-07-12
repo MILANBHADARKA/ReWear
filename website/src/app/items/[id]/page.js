@@ -2,22 +2,17 @@ import { notFound } from 'next/navigation';
 import ThemeToggle from '@/app/components/ThemeToggle'
 
 const getItemById = async (id) => {
-  //dummy for now!!
-  const mockItem = {
-    id,
-    name: 'Red Party Dress',
-    description: 'A stunning red party dress perfect for festive occasions, evening events, and celebrations. Designed with a flattering silhouette, this dress features delicate sequin accents and a comfortable fit for size M. It has been gently worn and is in great condition with no visible damage or stains. The fabric is soft, breathable, and moves gracefully, making it an elegant and stylish choice for any event. Ideal for someone looking to make a statement while staying sustainable by embracing pre-loved fashion.',
-    images: [
-      '/images/dress1.jpg',
-      '/images/dress2.jpg',
-      '/images/dress3.jpg',
-    ],
-    uploader: 'Jane Doe',
-    status: 'Available',
-    points: 40,
-  };
-
-  return mockItem;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cloths/${id}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch item:", error);
+    return null;
+  }
 };
 
 export default async function ItemDetailPage({ params }) {

@@ -14,7 +14,7 @@ export async function GET(request, { params }) {
     await connectDB();
 
     const item = await Cloth.findById(id)
-      .populate("Uploader", "name email")
+      .populate("Uploader", "username")
       .lean();
 
     if (!item) {
@@ -26,7 +26,7 @@ export async function GET(request, { params }) {
       name: item.itemName,
       description: item.itemDescription,
       images: item.itemImageUrls,
-      uploader: item.Uploader?.name || "Unknown",
+      uploader: item.Uploader?.username || "Unknown",
       status: item.status,
       points: item.points
     });
