@@ -41,7 +41,7 @@ export async function GET(request) {
         { status: 404 }
       );
     }
-    const badges = await getAllBadgesForUser(user.metamaskAddress);
+    const badges = await getAllBadgesForUser(user.MetaMaskAddress);
     console.log(badges);
 
     return Response.json({ success: true, user, badges });
