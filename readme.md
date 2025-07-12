@@ -73,9 +73,11 @@ ReWear is a web-based platform that enables users to exchange unused clothing th
 ### 🧠 Machine Learning / AI
 - **Groq LLM (llama3-8b-8192)** – Intelligent price suggestion & rental pricing
 - **Serper API** – Real-time web search integration for live pricing data
-- **Image Classification Models** – Categorize clothes by type & assess condition
-- **Sentiment Analysis** – Understand user feedback (positive/negative/neutral)
-- **Smart Chatbot** – NLP-driven assistant for personalized item search
+- **Sentiment Analysis** – Transformers
+- **Smart Chatbot** – Transformer, NLP-driven assistant for personalized item search
+- **FastAPI**
+- **NLTK and TextBlob** – Cosine Similarity 
+
 
 ---
 
