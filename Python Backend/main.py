@@ -140,19 +140,23 @@ async def search_by_image(file: UploadFile = File(...), top_k: int = 3):
     results = search_similar_items_by_image(query_path, top_k=top_k)
     return results
 
-
 class ItemInfo(BaseModel):
+    brand: str
     title: str
     description: str
-    brand: str
     date_of_purchase: str
+    rent_duration_days: int  # Add this field
 
 @app.post("/suggest-cost/")
 async def suggest_cost_endpoint(item: ItemInfo):
-    price = suggest_cost(
-        item.title,
-        item.description,
-        item.brand,
-        item.date_of_purchase
+    result = suggest_cost(
+        brand=item.brand,
+        title=item.title,
+        description=item.description,
+        date_of_purchase=item.date_of_purchase,
+        rent_duration_days=item.rent_duration_days
     )
-    return {"suggested_price": price}
+    return {
+        "suggested_resale_price_usd": result["resale_price_usd"],
+        "suggested_rental_price_usd": result["rental_price_usd"]
+    }
