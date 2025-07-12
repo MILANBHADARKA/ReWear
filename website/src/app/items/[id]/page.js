@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
-import ThemeToggle from "@/app/components/ThemeToggle";
-import Image from "next/image";
-import ImageGallery from "@/app/components/ImageViewerComponent";
+import ThemeToggle from "@/components/ThemeToggle";
+import ImageGallery from "@/components/ImageViewerComponent";
 
 const getItemById = async (id) => {
   try {
